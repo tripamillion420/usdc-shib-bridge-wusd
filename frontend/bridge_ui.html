@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>wUSD Bridge (Static)</title>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js"></script>
+</head>
+<body>
+  <h1>wUSD Bridge Interface</h1>
+  <button onclick="connect()">Connect Wallet</button>
+  <input type="text" id="amount" placeholder="Amount" />
+  <button onclick="deposit()">Deposit USDC</button>
+  <button onclick="withdraw()">Withdraw wUSD</button>
+
+  <script>
+    let account;
+    const bridgeAddress = "0xYourBridgeAddress";
+
+    async function connect() {
+      if (window.ethereum) {
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        account = accounts[0];
+        alert("Connected: " + account);
+      } else {
+        alert("Install MetaMask.");
+      }
+    }
+
+    async function deposit() {
+      const amount = document.getElementById("amount").value;
+      alert("Deposit feature should be integrated with ABI here.");
+      // Implement interaction with USDCtoSHIBBridge and ABI
+    }
+
+    async function withdraw() {
+      const amount = document.getElementById("amount").value;
+      alert("Withdraw feature should be integrated with ABI here.");
+    }
+  </script>
+</body>
+</html>
