@@ -1,0 +1,51 @@
+{
+  "name": "usdc-shib-bridge-wusd",
+  "version": "1.0.0",
+  "description": "Cross-chain bridge to mint and burn wUSD using USDC, SHIB, and DOGE with multi-chain support for Ethereum, BSC, Solana, and XRP.",
+  "main": "index.js",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "deploy:eth": "npx hardhat run scripts/deploy_eth.js --network localhost",
+    "deploy:bsc": "npx hardhat run scripts/deploy_bsc.js --network bscTestnet",
+    "frontend": "cd frontend && npm start",
+    "start:relayer": "node services/messaging_layer.js",
+    "relay:doge": "node dogecoin/doge_relayer.js",
+    "lint": "npx solhint 'contracts/**/*.sol'",
+    "format": "prettier --write .",
+    "build:frontend": "cd frontend && npm run build"
+  },
+  "keywords": [
+    "wUSD",
+    "Bridge",
+    "Ethereum",
+    "BSC",
+    "Solana",
+    "XRP",
+    "Dogecoin",
+    "USDC",
+    "SHIB",
+    "Cross-chain",
+    "DeFi",
+    "Stablecoin"
+  ],
+  "author": "Timothy Dean Firman & ChatGPT AI",
+  "license": "MIT",
+  "dependencies": {
+    "@ethersproject/abi": "^5.8.0",
+    "@ethersproject/providers": "^5.8.0",
+    "dogecoin-core": "^1.0.0",
+    "dotenv": "^16.3.1",
+    "ethers": "^6.8.0",
+    "web3": "^1.10.0"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@openzeppelin/contracts": "^5.0.1",
+    "chai": "^4.3.7",
+    "hardhat": "^2.22.0",
+    "mocha": "^10.2.0",
+    "prettier": "^3.2.5",
+    "solhint": "^3.5.0"
+  }
+}
