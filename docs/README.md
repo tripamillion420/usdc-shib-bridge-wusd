@@ -23,7 +23,7 @@ This repository contains a full-stack implementation of a decentralized bridge a
 ## Setup
 
 ```bash
-git clone https://github.com/yourusername/usdc-shib-bridge-wusd.git
+git clone https://github.com/tripamillion420/usdc-shib-bridge-wusd.git
 cd usdc-shib-bridge-wusd
 npm install
 npx hardhat compile
