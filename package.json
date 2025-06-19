@@ -28,6 +28,7 @@
     "Cross-chain",
     "DeFi",
     "Stablecoin"
+    "xrpl": "^2.6.0"
   ],
   "author": "Timothy Dean Firman & ChatGPT AI",
   "license": "MIT",
