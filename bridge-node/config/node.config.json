@@ -1,0 +1,11 @@
+{
+  "nodeId": "node-01",
+  "quorumSize": 3,
+  "trustedPeers": [
+    "node-01",
+    "node-02",
+    "node-03",
+    "node-04",
+    "node-05"
+  ]
+}
