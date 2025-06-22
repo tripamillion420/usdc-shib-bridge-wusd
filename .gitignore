@@ -1,9 +1,21 @@
+# Node
 node_modules/
+dist/
 .env
+.env.*
+/keys/node-private-key.pem
+logs/
+*.log
+
+# VSCode
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Solidity build artifacts
 artifacts/
 cache/
 typechain/
 coverage/
-build/
-dist/
-.DS_Store
