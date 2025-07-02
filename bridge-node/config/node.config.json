@@ -1,11 +1,16 @@
 {
-  "nodeId": "node-01",
-  "quorumSize": 3,
-  "trustedPeers": [
-    "node-01",
-    "node-02",
-    "node-03",
-    "node-04",
-    "node-05"
+  "nodeId": "node1",
+  "ethRpc": "https://mainnet.infura.io/v3/YOUR_INFURA_KEY",
+  "privateKeyPath": "./keys/node-private-key.pem",
+  "wusdContractAddress": "0xYourWUSDContractAddress",
+  "boneTokenAddress": "0xYourBONEContractAddress",
+  "treatTokenAddress": "0xYourTREATContractAddress",
+  "boneBridgeAddress": "0xYourBONEBridgeContractAddress",
+  "treatBridgeAddress": "0xYourTREATBridgeContractAddress",
+  "minSignaturesRequired": 3,
+  "quorumNodes": [
+    "0xNode1PublicKeyOrAddress",
+    "0xNode2PublicKeyOrAddress",
+    "0xNode3PublicKeyOrAddress"
   ]
 }
