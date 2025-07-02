@@ -2,15 +2,28 @@
   "nodeId": "node1",
   "ethRpc": "https://mainnet.infura.io/v3/YOUR_INFURA_KEY",
   "privateKeyPath": "./keys/node-private-key.pem",
-  "wusdContractAddress": "0xYourWUSDContractAddress",
-  "boneTokenAddress": "0xYourBONEContractAddress",
-  "treatTokenAddress": "0xYourTREATContractAddress",
+  "wusdContractAddress": "0xYourWUSDContractAddressHere",
+  
+  "usdcBridgeAddress": "0xYourUSDCBridgeAddress",
+  "shibBridgeAddress": "0xYourSHIBBridgeAddress",
+  "dogeBridgeAddress": "0xYourDOGEBridgeAddress",
+  "xrpBridgeAddress": "0xYourXRPBridgeAddress",
+  "solanaBridgeAddress": "YourSolanaProgramAddress", 
+
+  "boneTokenAddress": "0xYourBONEERC20TokenAddress",
+  "treatTokenAddress": "0xYourTREATERC20TokenAddress",
   "boneBridgeAddress": "0xYourBONEBridgeContractAddress",
   "treatBridgeAddress": "0xYourTREATBridgeContractAddress",
+
   "minSignaturesRequired": 3,
   "quorumNodes": [
     "0xNode1PublicKeyOrAddress",
     "0xNode2PublicKeyOrAddress",
     "0xNode3PublicKeyOrAddress"
-  ]
+  ],
+
+  "pricing": {
+    "boneToUSD": 0.01,
+    "treatToUSD": 0.005
+  }
 }
