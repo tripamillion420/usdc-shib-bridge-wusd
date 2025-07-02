@@ -1,66 +1,72 @@
 import React, { useState } from 'react';
 import { ethers } from 'ethers';
-import BridgeAbi from '../../abis/USDCtoSHIBBridge.json';
+import ABI from '../abis/BridgeABI.json'; // Adjust based on contract type
 
-const BRIDGE_ADDRESS = '0xYourBridgeAddress';
-const USDC_DECIMALS = 6;
-const WUSD_DECIMALS = 18;
-
-function BridgeForm({ account, setStatus }) {
+const BridgeForm = () => {
   const [amount, setAmount] = useState('');
-  const [isWithdraw, setIsWithdraw] = useState(false);
+  const [tokenType, setTokenType] = useState('USDC');
+  const [status, setStatus] = useState('');
 
-  const handleTransaction = async () => {
-    if (!account) {
-      alert("Please connect your wallet.");
+  const handleBridge = async () => {
+    if (!window.ethereum) {
+      setStatus('🛑 Please connect MetaMask.');
       return;
     }
 
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const bridge = new ethers.Contract(BRIDGE_ADDRESS, BridgeAbi.abi, signer);
-
-    const parsedAmount = isWithdraw
-      ? ethers.utils.parseUnits(amount, WUSD_DECIMALS)
-      : ethers.utils.parseUnits(amount, USDC_DECIMALS);
-
     try {
-      if (isWithdraw) {
-        const tx = await bridge.withdraw(parsedAmount, true);
-        await tx.wait();
-        setStatus(`Withdrawn ${amount} wUSD as USDC.`);
-      } else {
-        // Assume USDC approval already done for simplicity
-        const tx = await bridge.deposit(parsedAmount);
-        await tx.wait();
-        setStatus(`Deposited ${amount} USDC and received wUSD.`);
+      setStatus('🟡 Connecting to wallet...');
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const userAddress = await signer.getAddress();
+
+      let contractAddress;
+      switch (tokenType) {
+        case 'USDC': contractAddress = '0xYourUSDCBridgeAddress'; break;
+        case 'SHIB': contractAddress = '0xYourSHIBBridgeAddress'; break;
+        case 'DOGE': contractAddress = '0xYourDOGEBridgeAddress'; break;
+        case 'BONE': contractAddress = '0xYourBONEBridgeAddress'; break;
+        case 'TREAT': contractAddress = '0xYourTREATBridgeAddress'; break;
+        default: throw new Error('Unsupported token');
       }
-    } catch (err) {
-      setStatus(`Error: ${err.message}`);
+
+      const contract = new ethers.Contract(contractAddress, ABI, signer);
+      const parsedAmount = ethers.parseUnits(amount, 18);
+
+      setStatus(`🚀 Sending ${amount} ${tokenType}...`);
+
+      if (tokenType === 'BONE' || tokenType === 'TREAT') {
+        const tx = await contract.depositAndMint(parsedAmount);
+        await tx.wait();
+        setStatus('✅ Transaction confirmed.');
+      } else {
+        setStatus('⚠️ Token not yet implemented.');
+      }
+    } catch (error) {
+      console.error(error);
+      setStatus(`❌ Error: ${error.message}`);
     }
   };
 
   return (
-    <div className="form">
+    <div>
+      <h2>Bridge Assets</h2>
+      <select onChange={(e) => setTokenType(e.target.value)} value={tokenType}>
+        <option value="USDC">USDC</option>
+        <option value="SHIB">SHIB</option>
+        <option value="DOGE">DOGE</option>
+        <option value="BONE">BONE</option>
+        <option value="TREAT">TREAT</option>
+      </select>
       <input
-        type="number"
+        type="text"
         placeholder="Amount"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
       />
-      <label>
-        <input
-          type="checkbox"
-          checked={isWithdraw}
-          onChange={() => setIsWithdraw(!isWithdraw)}
-        />
-        Withdraw wUSD (as USDC)
-      </label>
-      <button onClick={handleTransaction} className="btn">
-        {isWithdraw ? "Withdraw" : "Deposit"}
-      </button>
+      <button onClick={handleBridge}>Bridge</button>
+      <p>{status}</p>
     </div>
   );
-}
+};
 
 export default BridgeForm;
