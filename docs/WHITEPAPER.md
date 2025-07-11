@@ -1,28 +1,69 @@
-# The White Papers 2: Decentralized Token Bridging with wUSD
+# White Paper: USDC–SHIB–wUSD Bridge with BONE and TREAT Integration
 
-## Abstract
+## 1. Executive Summary
+The USDC–SHIB–wUSD Bridge is a decentralized cross-chain protocol that enables users to convert between major ecosystem tokens—USDC, SHIB, BONE, TREAT, and DOGE—and a wrapped stablecoin, wUSD. The bridge supports Ethereum, BSC, Solana, XRP, and Dogecoin networks, and now features enhanced utility via BONE and TREAT token integration.
 
-This white paper outlines a modular cross-chain bridge architecture enabling users to convert USDC into SHIB and then mint a stablecoin proxy, Wrapped USD (wUSD), for real-world payment integration. The bridge supports token swaps, mint/burn mechanics, and cross-chain interoperability through messaging relayers and DEX routing.
+## 2. Objectives
+- Enable seamless value transfer across EVM and non-EVM chains.
+- Support SHIB ecosystem tokens (SHIB, BONE, TREAT) within a stablecoin bridge.
+- Provide validator incentives through TREAT minting.
+- Introduce governance and quorum control via BONE staking.
 
-## Core Components
+## 3. System Architecture
+### Chains Supported:
+- Ethereum: Core contracts (USDC, SHIB, BONE, TREAT, wUSD)
+- BSC: USDC, SHIB mirrored contracts
+- Solana: Rust-based SPL wUSD
+- XRP: Off-chain listener with on-chain mint
+- Dogecoin: UTXO tracker with relayer mint logic
 
-- **Wrapped USD (wUSD):** ERC-20 token backed by USDC/SHIB liquidity.
-- **USDC-to-SHIB Bridge:** Smart contract that facilitates USDC deposits, swaps to SHIB, and mints wUSD.
-- **DEX Integration:** Interfaces with Uniswap, PancakeSwap, and Solana-native AMMs.
-- **Cross-Chain Bridges:** Connects to Solana, BSC, XRP, and Dogecoin using relayers and off-chain oracles.
-- **Debit Card Layer:** Enables real-world spending via fiat conversion of wUSD via processors.
+### Components:
+- Smart Contracts: wUSD, BONEBridge, TREATBridge, wrapped token standards
+- Frontend: React UI with token selection (USDC, SHIB, BONE, TREAT)
+- Bridge Node: Validator with quorum-based mint execution and TREAT rewards
+- Relayers: Handle non-EVM events and route to EVM bridge
 
-## Supported Chains
+## 4. BONE Integration
+BONE serves dual roles:
+- Bridgeable asset via BONEBridge.sol (mint wUSD)
+- Validator staking token to influence node voting weight and DAO proposals
 
-- Ethereum (USDC, SHIB, wUSD)
-- BSC (wUSD mint/burn via bridge relay)
-- Solana (Rust-based bridge and token instruction parsing)
-- XRP (event-based minting via external ledger integration)
-- Dogecoin (BTC-style UTXO locking + event-based mint relay)
+## 5. TREAT Integration
+TREAT is:
+- Bridgeable asset via TREATBridge.sol (mint wUSD)
+- Reward token issued to node runners on each successful mint
 
-## Roadmap
+## 6. Token Conversion Logic
+Each bridge contract uses a conversion rate:
+- BONE to USD = configurable (e.g., 0.01 USD per BONE)
+- TREAT to USD = configurable (e.g., 0.005 USD per TREAT)
+Rates may use Chainlink or manual pricing.
 
-- Phase 1: Ethereum/USDC/SHIB/wUSD integration
-- Phase 2: BSC + Solana cross-chain support
-- Phase 3: XRP + DOGE message ingestion
-- Phase 4: Debit card processor and DAO reward staking
+## 7. Security
+- Uses OpenZeppelin Ownable and IERC20 standards
+- Validator logic uses quorum multisig threshold in node.config.json
+- Rate updates restricted to contract owner (DAO migration planned)
+- Private key security via local PEM file
+
+## 8. Governance
+- BONE will power DAO governance (via OpenZeppelin Governor or Snapshot)
+- Parameters: bridge fees, supported tokens, validator onboarding
+
+## 9. Deployment Overview
+1. Deploy wUSD token
+2. Deploy BONEBridge and TREATBridge
+3. Configure node.config.json with addresses and quorum settings
+4. Deploy relayer listeners for DOGE and XRP
+5. Launch validator node with status and reward logic
+
+## 10. Future Improvements
+- Real-time price feeds for all tokens
+- wBONE and wTREAT optional wrappers
+- Mobile-first frontend UI and hardware wallet integration
+- DAO ownership transfer
+
+## 11. License and Contribution
+MIT License. Contributions welcome via GitHub pull request or community node deployment.
+
+## 12. Repository
+https://github.com/tripamillion420/usdc-shib-bridge-wusd
