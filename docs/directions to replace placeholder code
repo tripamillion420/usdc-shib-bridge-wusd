@@ -1,0 +1,118 @@
+ Below is a completely plain text breakdown of every file and all the placeholder values that must be replaced for your USDC–SHIB–wUSD Bridge system to work properly with BONE and TREAT integration.
+
+⸻
+
+	1.	FILE: /bridge-node/config/node.config.json
+REPLACE THESE:
+
+	•	“ethRpc”: “https://mainnet.infura.io/v3/YOUR_INFURA_KEY”
+→ Replace YOUR_INFURA_KEY with your actual Ethereum RPC URL from Infura, Alchemy, or other provider.
+	•	“privateKeyPath”: “./keys/node-private-key.pem”
+→ Ensure this path leads to a real file containing your node’s private key.
+	•	“wusdContractAddress”: “0xYourWUSDContractAddressHere”
+→ Replace with the actual deployed address of your wUSD contract.
+	•	“boneTokenAddress”: “0xYourBONEERC20TokenAddress”
+→ Replace with the deployed ERC-20 BONE token address.
+	•	“treatTokenAddress”: “0xYourTREATERC20TokenAddress”
+→ Replace with the deployed ERC-20 TREAT token address.
+	•	“boneBridgeAddress”: “0xYourBONEBridgeContractAddress”
+→ Replace with the deployed address of your BONEBridge contract.
+	•	“treatBridgeAddress”: “0xYourTREATBridgeContractAddress”
+→ Replace with the deployed address of your TREATBridge contract.
+	•	“quorumNodes”: [“0xNode1PublicKeyOrAddress”, “0xNode2PublicKeyOrAddress”, …]
+→ Replace with the actual Ethereum addresses or public keys of the nodes participating in quorum.
+
+⸻
+
+	2.	FILE: /frontend/src/components/BridgeForm.js
+REPLACE THESE:
+
+Inside tokenOptions:
+	•	USDC: “0xYourUSDCBridgeAddress”
+→ Replace with the address of your deployed USDC bridge contract.
+	•	SHIB: “0xYourSHIBBridgeAddress”
+→ Replace with the address of your deployed SHIB bridge contract.
+	•	DOGE: “0xYourDOGEBridgeAddress”
+→ Replace with DOGE relayer destination if applicable.
+	•	BONE: “0xYourBONEBridgeAddress”
+→ Replace with your BONEBridge contract address.
+	•	TREAT: “0xYourTREATBridgeAddress”
+→ Replace with your TREATBridge contract address.
+
+Also ensure the ABI being imported:
+	•	import ABI from ‘../abis/BridgeABI.json’
+→ Must contain the correct ABI for your BONEBridge and TREATBridge contracts.
+
+⸻
+
+	3.	FILE: /bridge-node/core/executor.js
+REPLACE THESE:
+
+	•	const treatAbi = JSON.parse(fs.readFileSync(’./abis/TREATToken.json’, ‘utf8’))
+→ Make sure this file exists and contains the actual ABI of your TREAT token (must include the mint function).
+	•	config.treatTokenAddress
+→ Must be a real deployed TREAT token address, defined in node.config.json.
+	•	const reward = ethers.parseUnits(“0.001”, 18)
+→ Optional: adjust the TREAT reward amount as desired.
+
+⸻
+
+	4.	FILE: /bridge-node/scripts/start-node.js
+REPLACE AND ENSURE:
+
+	•	const config = require(’../config/node.config.json’)
+→ Ensure config values like ethRpc, privateKeyPath, and contract addresses are correctly defined and resolvable.
+	•	const privateKey = fs.readFileSync(config.privateKeyPath, ‘utf8’).trim()
+→ Make sure the file at this path exists and contains a real private key in PEM or raw hex format.
+	•	simulateIncomingMint()
+→ In production, replace this with a real event listener that detects bridge events.
+
+⸻
+
+	5.	FILE: /bridge-node/utils/validateConfig.js
+ENSURE:
+
+	•	All fields mentioned above are present in node.config.json
+	•	Each Ethereum address begins with “0x” and is 42 characters long
+	•	quorumNodes array contains enough entries to meet minSignaturesRequired
+
+⸻
+
+	6.	FILE: /bridge-node/keys/node-private-key.pem
+ENSURE:
+
+	•	This file contains a valid private key for an Ethereum wallet
+	•	It is used by the node runner to sign mint and reward transactions
+
+⸻
+
+	7.	FILE: /frontend/src/abis/BridgeABI.json
+ENSURE:
+
+	•	This ABI file matches the ABI of the BONEBridge and TREATBridge contracts
+	•	Must include the function depositAndMint(uint256)
+
+⸻
+
+	8.	FILE: /abis/TREATToken.json
+ENSURE:
+
+	•	Contains the ABI for your TREAT token contract
+	•	Must include the function mint(address,uint256)
+
+⸻
+
+	9.	FILE: /README.md
+REPLACE PLACEHOLDERS:
+
+	•	Update any example addresses, tokens, or chains mentioned in the README with your actual deployment info
+	•	Add real project status, usage instructions, or endpoints
+
+⸻
+
+	10.	FILES: /contracts/BONEBridge.sol and /contracts/TREATBridge.sol
+ENSURE:
+
+	•	Constructor parameters (boneToken, treatToken, wUSD) are passed the correct deployed addresses
+	•	OnlyOwner functions like setConversionRate are controlled securely
+	•	Token decimals match actual deployed token standards (usually 18)
